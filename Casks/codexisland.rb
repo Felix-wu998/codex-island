@@ -2,10 +2,10 @@ cask "codexisland" do
   version "0.0.1"
   sha256 "8ba2378eb4c620440ae129aba9bb03b0020f3411deac66481e002daee6cafcf5"
 
-  url "https://github.com/ericjypark/codex-island/releases/download/v#{version}/CodexIsland-#{version}.dmg"
+  url "https://github.com/Felix-wu998/codex-island/releases/download/v#{version}/CodexIsland-#{version}.dmg"
   name "CodexIsland"
   desc "Notch-based live activity for Claude Code and Codex API rate limits"
-  homepage "https://github.com/ericjypark/codex-island"
+  homepage "https://github.com/Felix-wu998/codex-island"
 
   livecheck do
     url :url
@@ -30,7 +30,7 @@ cask "codexisland" do
   end
 
   zap trash: [
-    "~/Library/Preferences/dev.codexisland.CodexIsland.plist",
+    "~/Library/Preferences/io.github.felixwu998.codexisland.plist",
     "~/Library/Application Support/CodexIsland",
   ]
 end

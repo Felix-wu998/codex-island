@@ -97,7 +97,7 @@ jobs:
             echo "## Install"
             echo
             echo '```sh'
-            echo "brew install --cask ericjypark/tap/codexisland"
+            echo "brew install --cask felix-wu998/tap/codexisland"
             echo '```'
             echo
             echo "Existing installs auto-update via Sparkle — open the app and Check Now if you're impatient."
@@ -117,7 +117,7 @@ jobs:
             dist/appcast.xml
           body_path: release_notes.md
 
-      # Mirror the cask to ericjypark/homebrew-tap so users on the tap pick up
+      # Mirror the cask to Felix-wu998/homebrew-tap so users on the tap pick up
       # the new version without anyone editing two repos. Requires a
       # fine-grained PAT in HOMEBREW_TAP_TOKEN with `contents: write` on the
       # homebrew-tap repo (the workflow's GITHUB_TOKEN can't cross repos).
@@ -128,7 +128,7 @@ jobs:
           SHA: ${{ steps.sha.outputs.sha }}
         run: |
           if [[ -z "${HOMEBREW_TAP_TOKEN:-}" ]]; then
-            echo "::warning::HOMEBREW_TAP_TOKEN not set — skipping tap sync. Cask in ericjypark/homebrew-tap will be stale until updated manually."
+            echo "::warning::HOMEBREW_TAP_TOKEN not set — skipping tap sync. Cask in Felix-wu998/homebrew-tap will be stale until updated manually."
             exit 0
           fi
           if [[ -z "${SHA:-}" ]]; then
@@ -138,7 +138,7 @@ jobs:
           # Strip leading "v" from the tag to get the cask version
           CASK_VERSION="${VERSION#v}"
           TAP_DIR="$RUNNER_TEMP/tap"
-          git clone "https://x-access-token:${HOMEBREW_TAP_TOKEN}@github.com/ericjypark/homebrew-tap.git" "$TAP_DIR"
+          git clone "https://x-access-token:${HOMEBREW_TAP_TOKEN}@github.com/Felix-wu998/homebrew-tap.git" "$TAP_DIR"
           cp Casks/codexisland.rb "$TAP_DIR/Casks/codexisland.rb"
           # Drop in the freshly-built version + SHA
           sed -i '' "s|version \"[0-9.]*\"|version \"$CASK_VERSION\"|" "$TAP_DIR/Casks/codexisland.rb"
@@ -148,7 +148,7 @@ jobs:
             echo "tap already up to date"
             exit 0
           fi
-          git config user.email "2019147551@yonsei.ac.kr"
-          git config user.name "ericjypark"
+          git config user.email "wzt782052814@gmail.com"
+          git config user.name "Felix-wu998"
           git commit -am "chore: bump codexisland to $CASK_VERSION"
           git push origin main

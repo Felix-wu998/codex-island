@@ -8,7 +8,7 @@ EdDSA signature so a hijacked URL alone can't deliver malware.
 
 The feed URL is:
 ```
-https://github.com/ericjypark/codex-island/releases/latest/download/appcast.xml
+https://github.com/Felix-wu998/codex-island/releases/latest/download/appcast.xml
 ```
 GitHub's `releases/latest/download/<asset>` endpoint always 302-redirects to
 the asset on the most recent non-prerelease release.
@@ -19,23 +19,21 @@ the asset on the most recent non-prerelease release.
    ```sh
    ./scripts/setup-sparkle.sh
    ```
-2. Generate the EdDSA keypair (private key lands in your Keychain, public key
-   prints to stdout):
+2. Generate the EdDSA keypair. The current project key is stored in the
+   `SPARKLE_ED_PRIVATE_KEY` GitHub Actions secret; do not commit the private
+   key:
    ```sh
-   ./Vendor/Sparkle/bin/generate_keys
+   node -e 'const fs=require("fs"),c=require("crypto");const {privateKey,publicKey}=c.generateKeyPairSync("ed25519");const priv=privateKey.export({format:"der",type:"pkcs8"});const pub=publicKey.export({format:"der",type:"spki"});const i=priv.lastIndexOf(Buffer.from([4,32]));fs.writeFileSync("sparkle_ed_priv",priv.subarray(i+2,i+34).toString("base64")+"\\n",{mode:0o600});console.log(pub.subarray(pub.length-32).toString("base64"));'
    ```
 3. The **public** key is hardcoded in `build.sh` as `SU_PUBLIC_KEY`. Public
    keys are not secrets — they're meant to ship inside distributed apps so
    Sparkle can verify update signatures. If you generate a new keypair,
    replace the constant in `build.sh` and read the rotation warning below.
-4. Export the **private** key for CI use:
+4. Store the **private** key for CI use:
    ```sh
-   ./Vendor/Sparkle/bin/generate_keys -x sparkle_ed_priv
+   gh secret set SPARKLE_ED_PRIVATE_KEY -R Felix-wu998/codex-island < sparkle_ed_priv
    ```
-   Open the file, copy its contents, and paste them into a new GitHub Actions
-   secret named `SPARKLE_ED_PRIVATE_KEY` at
-   `https://github.com/ericjypark/codex-island/settings/secrets/actions`.
-   Then **delete the file** — never commit it.
+   Then **delete `sparkle_ed_priv`** — never commit it.
 
 The private key never leaves your Mac (and CI's runner). Lose it and existing
 installs can no longer auto-update; you'd have to ship a new build with a
@@ -54,7 +52,7 @@ fresh public key embedded, which existing installs can't migrate to.
    - Signs it with the EdDSA key from the secret
    - Generates `dist/appcast.xml` listing the new version
    - Uploads **both** as release assets
-   - Mirrors `Casks/codexisland.rb` to `ericjypark/homebrew-tap` with the tag
+   - Mirrors `Casks/codexisland.rb` to `Felix-wu998/homebrew-tap` with the tag
      version and freshly computed SHA-256, if `HOMEBREW_TAP_TOKEN` is configured
 
 Existing installs pick up the update on their next daily check (or via
@@ -62,9 +60,10 @@ Settings → Updates → Check Now).
 
 ### Local dry-run
 
-`./release.sh` works locally too — it falls back to the Keychain key when
-`$SPARKLE_PRIVATE_KEY_PATH` is unset. The DMG and appcast land in `dist/`,
-unpublished. Useful for testing the prompt flow before tagging.
+`./release.sh` works locally too. Without `$SPARKLE_PRIVATE_KEY_PATH`, it builds
+the DMG and skips appcast signing. To test the full appcast path locally, point
+`SPARKLE_PRIVATE_KEY_PATH` at a private-key file with the same format as the
+GitHub secret. The DMG and appcast land in `dist/`, unpublished.
 
 ## Disabling the feature for a build
 

@@ -15,7 +15,7 @@ git commit -am "chore(release): bump VERSION to X.Y.Z" \
 git push origin main vX.Y.Z                           # 3. Push (fires CI)
 ```
 
-The marketing landing site at `ericjypark/codex-island-landing` has its own
+The marketing landing site at `Felix-wu998/codex-island-landing` has its own
 `VERSION` file (the hero chip + footer read it at build time). Bump it in
 that repo too, in the same release sweep, or the public site keeps showing
 the prior version even after `brew install` ships the new one.
@@ -26,7 +26,7 @@ That's it. CI does **everything else** in ~1.5 min:
 - Signs it with the EdDSA key from the `SPARKLE_ED_PRIVATE_KEY` secret
 - Generates `appcast.xml` listing the new version
 - Uploads DMG + appcast as release assets
-- Mirrors the cask to `ericjypark/homebrew-tap` with the new version + SHA-256
+- Mirrors the cask to `Felix-wu998/homebrew-tap` with the new version + SHA-256
 
 Watch with `gh run watch --exit-status` if you want confirmation, or just trust it.
 
@@ -34,7 +34,7 @@ Watch with `gh run watch --exit-status` if you want confirmation, or just trust 
 
 1. **`VERSION` must be a single-monotonic version like `0.0.X`, NOT `1` or `100` or anything weird.** `build.sh` uses `$VERSION` as both `CFBundleVersion` and `CFBundleShortVersionString`. Sparkle compares `CFBundleVersion` of the running app against `sparkle:version` in the appcast using Apple's component-wise comparator — so `"1"` parses as `[1]` and is **larger than** `"0.0.99"`. Stay in semver. Always increase.
 
-2. **The Sparkle public key in `build.sh` (`SU_PUBLIC_KEY="bz1g..."`) must NEVER be changed casually.** Every existing install verifies updates against this exact key. Change it and every prior install rejects every future update silently. The matching private key lives in (a) the maintainer's macOS Keychain under service `https://sparkle-project.org` and (b) the `SPARKLE_ED_PRIVATE_KEY` GitHub Actions secret. To rotate, see the migration note in `docs/SPARKLE.md` (TL;DR: don't).
+2. **The Sparkle public key in `build.sh` (`SU_PUBLIC_KEY="mhx2..."`) must NEVER be changed casually.** Every existing install verifies updates against this exact key. Change it and every prior install rejects every future update silently. The matching private key lives in the `SPARKLE_ED_PRIVATE_KEY` GitHub Actions secret. To rotate, see the migration note in `docs/SPARKLE.md` (TL;DR: don't).
 
 3. **Don't manually edit `Casks/codexisland.rb` for a version bump.** CI rewrites it on the homebrew-tap side at release time. Manual version/SHA edits are overwritten or drift. (Editing unrelated cask metadata — postflight, zap, livecheck — via a normal commit is fine; CI preserves those.)
 
@@ -44,10 +44,10 @@ Watch with `gh run watch --exit-status` if you want confirmation, or just trust 
 
 ### CI secrets (one-time, already configured)
 
-These two GitHub Actions secrets exist on the `codex-island` repo:
+These two GitHub Actions secrets need to exist on the `codex-island` repo:
 
 - **`SPARKLE_ED_PRIVATE_KEY`** — the EdDSA private key. Without it CI fails at the signing step.
-- **`HOMEBREW_TAP_TOKEN`** — fine-grained PAT with `contents: write` on `ericjypark/homebrew-tap` only. Without it the cask-sync step warns and skips, but the GitHub Release still ships.
+- **`HOMEBREW_TAP_TOKEN`** — fine-grained PAT with `contents: write` on `Felix-wu998/homebrew-tap` only. Without it the cask-sync step warns and skips, but the GitHub Release still ships.
 
 If either is rotated, regenerate via the original instructions in `docs/SPARKLE.md`.
 
@@ -97,7 +97,7 @@ History — read before re-stepping on these rakes:
 
 - The `5m / 15m / 30m` polling presets (`Sources/Model/RefreshIntervalStore.swift`) — Anthropic rate-limits aggressively. Anything below 5m burns the daily quota.
 - The `claude-code/X.Y.Z` User-Agent string — Anthropic gates `/api/oauth/usage` on it. Without it, requests 401 even with a valid token.
-- The bundle ID `dev.codexisland.CodexIsland` — changing it orphans every existing user's preferences and Launch-at-Login registration.
+- The bundle ID `io.github.felixwu998.codexisland` — changing it orphans every existing user's preferences and Launch-at-Login registration.
 - The `SU_PUBLIC_KEY` constant in `build.sh`. See hard rule #2.
 
 ## `docs/` vs `notes/` — what gets committed

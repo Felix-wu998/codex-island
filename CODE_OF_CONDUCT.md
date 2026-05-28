@@ -9,7 +9,7 @@ CodexIsland follows the [Contributor Covenant v2.1](https://www.contributor-cove
 
 ## Reporting
 
-Email `pbokdol@gmail.com` for anything that needs handling privately. Public issues and PRs are otherwise the right place to discuss the project itself.
+Email `wzt782052814@gmail.com` for anything that needs handling privately. Public issues and PRs are otherwise the right place to discuss the project itself.
 
 ## Enforcement
 

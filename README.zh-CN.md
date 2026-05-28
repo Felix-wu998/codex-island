@@ -35,14 +35,14 @@ CodexIsland 是一个原生 macOS 悬浮层，把 MacBook 刘海变成类似 Dyn
 ### Homebrew
 
 ```sh
-brew install --cask ericjypark/tap/codexisland
+brew install --cask felix-wu998/tap/codexisland
 ```
 
-首次运行会自动 tap `ericjypark/homebrew-tap`。这个 cask 会自动移除 Gatekeeper quarantine 属性，因为 CodexIsland 没有 Apple 签名，更新校验由 Sparkle 独立处理。
+首次运行会自动 tap `Felix-wu998/homebrew-tap`。这个 cask 会自动移除 Gatekeeper quarantine 属性，因为 CodexIsland 没有 Apple 签名，更新校验由 Sparkle 独立处理。
 
 ### 直接下载
 
-从 [Releases](https://github.com/ericjypark/codex-island/releases) 下载 `CodexIsland-X.Y.Z.dmg`，把应用拖进 `/Applications`，然后运行：
+从 [Releases](https://github.com/Felix-wu998/codex-island/releases) 下载 `CodexIsland-X.Y.Z.dmg`，把应用拖进 `/Applications`，然后运行：
 
 ```sh
 xattr -dr com.apple.quarantine /Applications/CodexIsland.app
@@ -107,7 +107,7 @@ Claude：
 需要 macOS 13+ 和来自 Xcode / Command Line Tools 的 Swift 工具链。
 
 ```sh
-git clone https://github.com/ericjypark/codex-island
+git clone https://github.com/Felix-wu998/codex-island
 cd codex-island
 ./build.sh
 open build/CodexIsland.app
@@ -134,4 +134,4 @@ npm install --global create-dmg
 
 `release.sh` 会运行原生构建，把 `.app` 复制到 `dist/`，应用 ad-hoc codesign，创建 `dist/CodexIsland-X.Y.Z.dmg`，并输出文件大小和 SHA-256。
 
-推送 `v*` tag 会触发 `.github/workflows/release.yml`，在 `macos-15` 上构建 DMG、计算 checksum、发布 GitHub Release，并在配置了 `HOMEBREW_TAP_TOKEN` 时同步 cask 到 `ericjypark/homebrew-tap`。
+推送 `v*` tag 会触发 `.github/workflows/release.yml`，在 `macos-15` 上构建 DMG、计算 checksum、发布 GitHub Release，并在配置了 `HOMEBREW_TAP_TOKEN` 时同步 cask 到 `Felix-wu998/homebrew-tap`。

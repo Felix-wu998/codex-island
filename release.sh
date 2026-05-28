@@ -55,9 +55,9 @@ DMG_SHA256="$(shasum -a 256 "$DMG" | awk '{print $1}')"
 DMG_SIZE_BYTES="$(stat -f%z "$DMG")"
 
 # Sign the DMG with Sparkle's EdDSA key, then write appcast.xml as a release
-# asset. Two ways to provide the key:
-#   - Local: stored in Keychain by `Vendor/Sparkle/bin/generate_keys` (default)
-#   - CI:    file path in $SPARKLE_PRIVATE_KEY_PATH (passed via GitHub Secret)
+# asset. CI passes the private key path via $SPARKLE_PRIVATE_KEY_PATH. Local
+# runs without that env var still produce a DMG, but skip appcast signing so
+# this script never unexpectedly prompts for Keychain access.
 SIGN_TOOL="Vendor/Sparkle/bin/sign_update"
 APPCAST="$DIST/appcast.xml"
 
@@ -65,8 +65,6 @@ have_key=0
 sign_args=()
 if [[ -n "${SPARKLE_PRIVATE_KEY_PATH:-}" && -f "${SPARKLE_PRIVATE_KEY_PATH}" ]]; then
   sign_args+=(--ed-key-file "${SPARKLE_PRIVATE_KEY_PATH}")
-  have_key=1
-elif security find-generic-password -s "https://sparkle-project.org" >/dev/null 2>&1; then
   have_key=1
 fi
 
@@ -82,7 +80,7 @@ if [[ -x "$SIGN_TOOL" && $have_key -eq 1 ]]; then
     exit 1
   fi
 
-  RELEASE_URL="https://github.com/ericjypark/codex-island/releases/download/v${VERSION}/$(basename "$DMG")"
+  RELEASE_URL="https://github.com/Felix-wu998/codex-island/releases/download/v${VERSION}/$(basename "$DMG")"
   PUBDATE="$(LC_TIME=en_US.UTF-8 date -u "+%a, %d %b %Y %H:%M:%S +0000")"
 
   cat > "$APPCAST" <<EOF
@@ -90,7 +88,7 @@ if [[ -x "$SIGN_TOOL" && $have_key -eq 1 ]]; then
 <rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
   <channel>
     <title>CodexIsland</title>
-    <link>https://github.com/ericjypark/codex-island/releases/latest/download/appcast.xml</link>
+    <link>https://github.com/Felix-wu998/codex-island/releases/latest/download/appcast.xml</link>
     <description>Most recent CodexIsland release.</description>
     <language>en</language>
     <item>
@@ -99,7 +97,7 @@ if [[ -x "$SIGN_TOOL" && $have_key -eq 1 ]]; then
       <sparkle:version>$VERSION</sparkle:version>
       <sparkle:shortVersionString>$VERSION</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
-      <sparkle:releaseNotesLink>https://github.com/ericjypark/codex-island/releases/tag/v${VERSION}</sparkle:releaseNotesLink>
+      <sparkle:releaseNotesLink>https://github.com/Felix-wu998/codex-island/releases/tag/v${VERSION}</sparkle:releaseNotesLink>
       <enclosure url="$RELEASE_URL" sparkle:version="$VERSION" sparkle:shortVersionString="$VERSION" length="$DMG_SIZE_BYTES" type="application/octet-stream" sparkle:edSignature="$EDSIG" />
     </item>
   </channel>
@@ -108,7 +106,7 @@ EOF
 
   echo "✓ $APPCAST signed and ready to publish"
 else
-  echo "⚠ skipping appcast — sign_update missing or no signing key (see docs/SPARKLE.md)"
+  echo "⚠ skipping appcast — sign_update missing or SPARKLE_PRIVATE_KEY_PATH not set (see docs/SPARKLE.md)"
 fi
 
 echo ""

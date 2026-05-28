@@ -4,7 +4,7 @@ set -euo pipefail
 cd "$(dirname "$0")"
 
 APP_NAME="CodexIsland"
-BUNDLE_ID="dev.codexisland.CodexIsland"
+BUNDLE_ID="io.github.felixwu998.codexisland"
 VERSION="$(cat VERSION)"
 if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
   echo "error: VERSION must be X.Y.Z (got '$VERSION')" >&2
@@ -30,9 +30,9 @@ SPARKLE_FW="$SPARKLE_DIR/Sparkle.framework"
 # for CI). To rotate, see docs/SPARKLE.md — DO NOT change this lightly:
 # every existing install verifies updates against this exact public key, and
 # changing it strands them.
-SU_PUBLIC_KEY="bz1gwLBKgIL/Y7OO23o3gaMNIeTpvv/C90F9inr9Quo="
+SU_PUBLIC_KEY="mhx2wn2bfZ5peDceAesmU8Zgw6LLUBbE8LjHKegnINk="
 
-SU_FEED_URL="${SU_FEED_URL:-https://github.com/ericjypark/codex-island/releases/latest/download/appcast.xml}"
+SU_FEED_URL="${SU_FEED_URL:-https://github.com/Felix-wu998/codex-island/releases/latest/download/appcast.xml}"
 
 rm -rf "$BUILD_DIR"
 mkdir -p "$MACOS_DIR" "$RES_DIR" "$FRAMEWORKS_DIR"
@@ -91,7 +91,7 @@ cat > "$CONTENTS/Info.plist" <<EOF
   <key>LSUIElement</key><true/>
   <key>NSHighResolutionCapable</key><true/>
   <key>NSPrincipalClass</key><string>NSApplication</string>
-  <key>NSHumanReadableCopyright</key><string>Copyright © 2026 Eric Park. MIT licensed.</string>
+  <key>NSHumanReadableCopyright</key><string>Copyright © 2026 Felix-wu998 and contributors. MIT licensed.</string>
   <key>SUFeedURL</key><string>$SU_FEED_URL</string>
   <key>SUPublicEDKey</key><string>$SU_PUBLIC_KEY</string>
   <key>SUEnableAutomaticChecks</key><true/>

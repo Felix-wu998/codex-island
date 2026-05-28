@@ -71,17 +71,17 @@ providers' own usage endpoints.
 ### Homebrew
 
 ```sh
-brew install --cask ericjypark/tap/codexisland
+brew install --cask felix-wu998/tap/codexisland
 ```
 
-The first invocation auto-taps `ericjypark/homebrew-tap`. The cask strips the
+The first invocation auto-taps `Felix-wu998/homebrew-tap`. The cask strips the
 Gatekeeper quarantine attribute automatically (CodexIsland is unsigned by
 Apple — Sparkle handles update verification independently).
 
 ### Direct download
 
 Download `CodexIsland-X.Y.Z.dmg` from
-[Releases](https://github.com/ericjypark/codex-island/releases), drag the app
+[Releases](https://github.com/Felix-wu998/codex-island/releases), drag the app
 to `/Applications`, then run:
 
 ```sh
@@ -97,9 +97,7 @@ macOS Gatekeeper quarantine attribute that triggers the "cannot be opened
 because Apple cannot check it for malicious software" warning. The source code
 is in this repository for audit.
 
-If a sponsored Apple Developer ID becomes available via
-[GitHub Sponsors](https://github.com/sponsors/ericjypark), signed builds can
-follow.
+If an Apple Developer ID becomes available later, signed builds can follow.
 </details>
 
 <details>
@@ -185,7 +183,7 @@ and re-arms it with the selected cadence.
 Requires macOS 13+ and a Swift toolchain from Xcode / Command Line Tools.
 
 ```sh
-git clone https://github.com/ericjypark/codex-island
+git clone https://github.com/Felix-wu998/codex-island
 cd codex-island
 ./build.sh
 open build/CodexIsland.app
@@ -219,7 +217,7 @@ SHA-256.
 
 Pushing a `v*` tag triggers `.github/workflows/release.yml` on `macos-15`,
 builds the DMG, computes the checksum, publishes a GitHub Release, and mirrors
-the cask to `ericjypark/homebrew-tap` when `HOMEBREW_TAP_TOKEN` is configured.
+the cask to `Felix-wu998/homebrew-tap` when `HOMEBREW_TAP_TOKEN` is configured.
 
 `Casks/codexisland.rb` is the Homebrew Cask template. Do not manually bump its
 version or SHA for normal releases; CI copies it to the tap and rewrites those
@@ -333,10 +331,10 @@ See [CHANGELOG.md](CHANGELOG.md) for user-facing changes per release.
 
 MIT - see [LICENSE](LICENSE).
 
-<a href="https://www.star-history.com/?type=date&repos=ericjypark%2Fcodex-island">
+<a href="https://www.star-history.com/?type=date&repos=Felix-wu998%2Fcodex-island">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=ericjypark/codex-island&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=ericjypark/codex-island&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=ericjypark/codex-island&type=date&legend=top-left" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=Felix-wu998/codex-island&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=Felix-wu998/codex-island&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=Felix-wu998/codex-island&type=date&legend=top-left" />
  </picture>
 </a>

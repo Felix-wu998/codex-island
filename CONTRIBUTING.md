@@ -7,7 +7,7 @@ Thanks for being here. CodexIsland is small enough that any contribution moves t
 Open an issue. Useful things to include:
 
 - macOS version (`sw_vers`) — particularly if the notch detection or window placement is off.
-- Output of `defaults read dev.codexisland.CodexIsland` if it's a settings-related bug.
+- Output of `defaults read io.github.felixwu998.codexisland` if it's a settings-related bug.
 - A short description of what you expected vs. what happened.
 - Whether Claude / Codex actually has data populated in the panel — `auth required` errors usually mean the upstream creds aren't where we expect them.
 
@@ -38,7 +38,7 @@ No Xcode project, no SwiftPM. Just `swiftc Sources/**/*.swift`.
 - Multi-monitor support. Right now the app chooses one target screen: the first notched display, otherwise `NSScreen.main`. Users with multiple notched displays should ideally see one panel per screen (or at least an option).
 - Real history for the SparkChart. The synthesized noise is honestly decorative. If either Anthropic or OpenAI exposes a usage time-series, we should switch.
 - Accessibility. VoiceOver labels exist, but a high-contrast variant and a full keyboard/focus pass still need work.
-- Sponsor an Apple Developer ID via [GitHub Sponsors](https://github.com/sponsors/ericjypark) and we'll ship a signed build.
+- If an Apple Developer ID becomes available later, signed builds can follow.
 
 ## Code of conduct
 

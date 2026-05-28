@@ -70,7 +70,7 @@ broken update channel weeks later.
 Three changes on top of the 0.0.10 baseline. The minor-version bump signals
 that the 0.0.x bootstrap series is over — not that this single release is
 big. Per-tag detail for the 0.0.x series lives on the
-[GitHub Releases page](https://github.com/ericjypark/codex-island/releases).
+[GitHub Releases page](https://github.com/Felix-wu998/codex-island/releases).
 
 ### Added
 
